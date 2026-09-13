@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Transparent 3D Cube</title>
+    <style>
+        body { 
+            margin: 0; 
+            background: #1a1a1a; 
+            display: flex; 
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            color: #ffffff;
+            font-family: sans-serif;
+            user-select: none; /* Prevents text selection while dragging the cube */
+        }
+        canvas { 
+            border: 1px solid #333; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            cursor: grab;
+        }
+        canvas:active {
+            cursor: grabbing;
+        }
+        .instructions {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 600x600 canvas perfectly matches our Rust 1:1 aspect ratio math -->
+    <canvas id="cube-canvas" width="600" height="600"></canvas>
+    
+    <div class="instructions">Click and drag your mouse to rotate the cube</div>
+
+    <script type="module">
+        // Import the WASM initializer and our exported start function
+        import init, { start } from './pkg/particles.js';
+
+        async function run() {
+            // Load and compile the WebAssembly binary
+            await init();
+            
+            // Execute the rendering loop targeting our canvas
+            start('cube-canvas');
+        }
+        
+        run();
+    </script>
+</body>
+</html>
